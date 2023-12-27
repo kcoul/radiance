@@ -63,21 +63,20 @@ void OutputWindow::setScreenSize(QSize screenSize) {
 
 void OutputWindow::reload() {
     auto screens = QGuiApplication::screens();
-
     bool found = false;
 
-    foreach(QScreen *testScreen, screens) {
-        if (testScreen->name() == m_screenName) {
-            if (screen() != testScreen) {
-                setScreen(testScreen);
-                setScreenSize(testScreen->geometry().size());
+    if (!m_found)
+        foreach(QScreen *testScreen, screens) {
+            if (testScreen->name() == m_screenName) {
+                m_found = true;
+                if (screen() != testScreen) {
+                    setScreen(testScreen);
+                    setScreenSize(testScreen->geometry().size());
+                }
             }
-            found = true;
         }
-    }
 
-    if (found != m_found) {
-        m_found = found;
+    if (m_found) {
         if (m_shown && m_found) putOnScreen();
         setVisible(m_shown && m_found);
         emit foundChanged(found);
