@@ -105,7 +105,7 @@ private:
     static const QMetaObject *gen_superdata();
     static const QByteArrayData *gen_stringdata();
     static const uint *gen_data();
-    static const QMetaObject * const *gen_relatedMetaObjects();
+    static const QMetaObject::SuperData *gen_relatedMetaObjects();
     static void *gen_extradata();
     static void findAndActivateSignal(QObject *_o, int _id, void **_a);
 
@@ -337,7 +337,7 @@ const uint *QmlSharedPointer<T, B>::gen_data()
 }
 
 template<typename T, typename B>
-const QMetaObject * const *QmlSharedPointer<T, B>::gen_relatedMetaObjects()
+const QMetaObject::SuperData *QmlSharedPointer<T, B>::gen_relatedMetaObjects()
 {
     return T::staticMetaObject.d.relatedMetaObjects;
 }
@@ -354,6 +354,6 @@ template<typename T, typename B> const QMetaObject QmlSharedPointer<T, B>::stati
     QmlSharedPointer<T, B>::gen_stringdata(),
     QmlSharedPointer<T, B>::gen_data(),
     QmlSharedPointer<T, B>::qt_static_metacall,
-    nullptr,//QmlSharedPointer<T, B>::gen_relatedMetaObjects(),
+    QmlSharedPointer<T, B>::gen_relatedMetaObjects(),
     QmlSharedPointer<T, B>::gen_extradata(),
 } };
