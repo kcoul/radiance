@@ -1,5 +1,6 @@
 #include "OutputWindow.h"
 
+#include <QKeyEvent>
 #include <QScreen>
 #include <QGuiApplication>
 

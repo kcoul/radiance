@@ -53,8 +53,13 @@ QSGNode *QQuickVideoNodePreview::updatePaintNode(QSGNode *oldNode, UpdatePaintNo
         node->setRect(boundingRect());
         node->setOwnsTexture(true);
 
+        int newId = P_PID;
+
         // Create a garbage QSGTexture if the real one is not ready yet
-        node->setTexture(window()->createTextureFromId(0, QSize(1, 1), QQuickWindow::TextureHasAlphaChannel));
+        node->setTexture(window()->createTextureFromNativeObject(QQuickWindow::NativeObjectTexture,
+                                                                 &newId, 0,
+                                                                 QSize(1, 1),
+                                                                 QQuickWindow::TextureHasAlphaChannel));
         // It is important that we generate a node even if we are not ready
         // so that we can mark it dirty. If we don't mark it dirty on the first call,
         // this function will never get called again
@@ -65,7 +70,9 @@ QSGNode *QQuickVideoNodePreview::updatePaintNode(QSGNode *oldNode, UpdatePaintNo
         if (textureId) {
             // TODO repeatedly creating the QSGTexture is probably not the most efficient
             auto size = m_previewAdapter->previewSize();
-            node->setTexture(window()->createTextureFromId(textureId, size, QQuickWindow::TextureHasAlphaChannel));
+            node->setTexture(window()->createTextureFromNativeObject(QQuickWindow::NativeObjectTexture,
+                                                                     &textureId, 0, size,
+                                                                     QQuickWindow::TextureHasAlphaChannel));
             node->setRect(boundingRect());
         }
     }

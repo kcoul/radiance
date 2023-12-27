@@ -7,3 +7,5 @@ src/doxygen.cfg
 src/moc_*.cpp
 src/CMake*
 .DS_Store
+.idea
+cmake-build-*

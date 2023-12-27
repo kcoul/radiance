@@ -361,25 +361,25 @@ void Model::flush() {
 
     // Compute the changeset
     {
-        auto v = QSet<VideoNodeSP *>::fromList(m_vertices);
-        auto v4r = QSet<VideoNodeSP *>::fromList(m_verticesForRendering);
+        auto v = QSet<VideoNodeSP *>(m_vertices.begin(), m_vertices.end());// QSet<VideoNodeSP *>::fromList(m_vertices);
+        auto v4r = QSet<VideoNodeSP *>(m_verticesForRendering.begin(), m_verticesForRendering.end());//QSet<VideoNodeSP *>::fromList(m_verticesForRendering);
         // TODO Can't use QSet without implementing qHash
         //auto e = QSet<Edge>::fromList(m_edges);
         //auto e4r = QSet<Edge>::fromList(m_edgesForRendering);
         auto e = m_edges;
         auto e4r = m_edgesForRendering;
 
-        for (int i=0; i<m_vertices.count(); i++) {
-            if (!v4r.contains(m_vertices.at(i))) verticesAdded.append(m_vertices.at(i));
+        for (int j=0; j<m_vertices.count(); j++) {
+            if (!v4r.contains(m_vertices.at(j))) verticesAdded.append(m_vertices.at(j));
         }
-        for (int i=0; i<m_verticesForRendering.count(); i++) {
-            if (!v.contains(m_verticesForRendering.at(i))) verticesRemoved.append(m_verticesForRendering.at(i));
+        for (int k=0; k<m_verticesForRendering.count(); k++) {
+            if (!v.contains(m_verticesForRendering.at(k))) verticesRemoved.append(m_verticesForRendering.at(k));
         }
-        for (int i=0; i<m_edges.count(); i++) {
-            if (!e4r.contains(m_edges.at(i))) edgesAdded.append(m_edges.at(i));
+        for (int l=0; l<m_edges.count(); l++) {
+            if (!e4r.contains(m_edges.at(l))) edgesAdded.append(m_edges.at(l));
         }
-        for (int i=0; i<m_edgesForRendering.count(); i++) {
-            if (!e.contains(m_edgesForRendering.at(i))) edgesRemoved.append(m_edgesForRendering.at(i));
+        for (int m=0; m<m_edgesForRendering.count(); m++) {
+            if (!e.contains(m_edgesForRendering.at(m))) edgesRemoved.append(m_edgesForRendering.at(m));
         }
     }
 
@@ -393,16 +393,16 @@ void Model::flush() {
 
     // Convert the changeset to VariantLists for QML
     QVariantList verticesAddedVL;
-    for (int i=0; i<verticesAdded.count(); i++) verticesAddedVL.append(QVariant::fromValue(verticesAdded.at(i)));
+    for (int n=0; n<verticesAdded.count(); n++) verticesAddedVL.append(QVariant::fromValue(verticesAdded.at(n)));
 
     QVariantList verticesRemovedVL;
-    for (int i=0; i<verticesRemoved.count(); i++) verticesRemovedVL.append(QVariant::fromValue(verticesRemoved.at(i)));
+    for (int o=0; o<verticesRemoved.count(); o++) verticesRemovedVL.append(QVariant::fromValue(verticesRemoved.at(o)));
 
     QVariantList edgesAddedVL;
-    for (int i=0; i<edgesAdded.count(); i++) edgesAddedVL.append(edgesAdded.at(i).toVariantMap());
+    for (int p=0; p<edgesAdded.count(); p++) edgesAddedVL.append(edgesAdded.at(p).toVariantMap());
 
     QVariantList edgesRemovedVL;
-    for (int i=0; i<edgesRemoved.count(); i++) edgesRemovedVL.append(edgesRemoved.at(i).toVariantMap());
+    for (int q=0; q<edgesRemoved.count(); q++) edgesRemovedVL.append(edgesRemoved.at(q).toVariantMap());
 
     emit graphChanged(verticesAddedVL, verticesRemovedVL, edgesAddedVL, edgesRemovedVL);
 }
@@ -515,9 +515,9 @@ QMap<QSharedPointer<VideoNode>, GLuint> ModelCopyForRendering::render(QSharedPoi
         auto vertex = vertices.at(i);
         QVector<GLuint> inputTextures(vertex->inputCount(), chain->blankTexture());
         for (int j=0; j<vertex->inputCount(); j++) {
-            auto fromVertex = inputs.at(i).at(j);
-            if (fromVertex != -1) {
-                auto inpTexture = resultTextures.at(fromVertex);
+            auto fromVert = inputs.at(i).at(j);
+            if (fromVert != -1) {
+                auto inpTexture = resultTextures.at(fromVert);
                 if (inpTexture != 0) {
                     inputTextures[j] = inpTexture;
                 }

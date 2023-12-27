@@ -17,6 +17,6 @@ find_library (SAMPLERATE_LIBRARIES NAMES samplerate)
 # handle the QUIETLY and REQUIRED arguments and set SAMPLERATE_FOUND to TRUE if
 # all listed variables are TRUE
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (SAMPLERATE DEFAULT_MSG SAMPLERATE_LIBRARIES SAMPLERATE_INCLUDES)
+find_package_handle_standard_args (SampleRate DEFAULT_MSG SAMPLERATE_LIBRARIES SAMPLERATE_INCLUDES)
 
 mark_as_advanced (SAMPLERATE_LIBRARIES SAMPLERATE_INCLUDES)

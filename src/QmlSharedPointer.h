@@ -307,7 +307,7 @@ const QByteArrayData *QmlSharedPointer<T, B>::gen_stringdata()
     static QByteArrayData new_stringdata[MAX_N_STRINGS];
 
     for (int i=0; i<MAX_N_STRINGS; i++) {
-        new_stringdata[i].ref.atomic.store(-1); // Don't attempt to free
+        new_stringdata[i].ref.atomic.storeRelaxed(-1); // Don't attempt to free
     }
 
     for (int i=0; i<n_strings; i++) {
@@ -348,11 +348,12 @@ void *QmlSharedPointer<T, B>::gen_extradata()
     return T::staticMetaObject.d.extradata;
 }
 
+
 template<typename T, typename B> const QMetaObject QmlSharedPointer<T, B>::staticMetaObject = { {
     QmlSharedPointer<T, B>::gen_superdata(),
     QmlSharedPointer<T, B>::gen_stringdata(),
     QmlSharedPointer<T, B>::gen_data(),
     QmlSharedPointer<T, B>::qt_static_metacall,
-    QmlSharedPointer<T, B>::gen_relatedMetaObjects(),
+    nullptr,//QmlSharedPointer<T, B>::gen_relatedMetaObjects(),
     QmlSharedPointer<T, B>::gen_extradata(),
 } };

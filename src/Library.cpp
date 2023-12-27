@@ -98,7 +98,8 @@ void Library::populate(LibraryItem *item, QString currentDirectory = ".") {
     QDir userDir(Paths::userLibrary() + "/" + currentDirectory);
     auto systemLs = systemDir.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     auto userLs = userDir.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
-    auto ls = (systemLs + userLs).toSet().toList();
+    auto concatLs = (systemLs + userLs);
+    auto ls = concatLs.toVector().toList();; //concatLs.toSet().toList();
     ls.sort(Qt::CaseInsensitive);
     for (auto f = ls.begin(); f != ls.end(); f++) {
         auto path = currentDirectory + "/" + *f;
@@ -213,7 +214,7 @@ int Library::columnCount(const QModelIndex &parent) const {
 Qt::ItemFlags Library::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
-        return 0;
+        return Qt::ItemFlags();
 
     return QAbstractItemModel::flags(index);
 }
